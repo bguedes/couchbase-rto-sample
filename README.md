@@ -1,4 +1,4 @@
-# couchbase-beer
+# couchbase-RTO-Sample
 
 mvn clean package
 
@@ -10,10 +10,10 @@ By default Spring Boot use the port 8080
 
 For Couchbase configuration, you can modify the file src/main/java/resources/applications.properties
 
-* storage.host=10.112.163.101 (couchbase ip adress)
-* storage.bucket=beer-sample
-* storage.username=Administrator
-* storage.password=couchbase
+* storage.host=127.0.0.1 (couchbase ip adress)
+* storage.bucket=travel-sample
+* storage.username=rto
+* storage.password=password
 
 REST apis example for test :
 
