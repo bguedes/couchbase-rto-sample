@@ -3,8 +3,8 @@ package com.couchbase.day.config;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import com.couchbase.client.core.tracing.ThresholdLogReporter;
 import com.couchbase.client.core.tracing.ThresholdLogTracer;
@@ -16,10 +16,7 @@ import com.couchbase.client.java.env.DefaultCouchbaseEnvironment;
 
 import io.opentracing.Tracer;
 
-import com.uber.jaeger.Configuration;
-import com.uber.jaeger.samplers.ProbabilisticSampler;
-
-@SpringBootApplication
+@Configuration
 public class Database {
 
 	@Value("${storage.host}")
@@ -35,26 +32,10 @@ public class Database {
 	private String password;
 
 	public @Bean Cluster couchbaseCluster() {
-				
-/*		
-		Tracer tracer = new Configuration("couchbase-beer", 
-				new Configuration.SamplerConfiguration(ProbabilisticSampler.TYPE, 1),
-				new Configuration.ReporterConfiguration(
-						true, 
-						"localhost", 
-						5775, 
-						1000, 
-						10000))
-				.getTracer();
-*/		
-
-		
-		//CouchbaseEnvironment env = DefaultCouchbaseEnvironment.builder().queryEndpoints(1).build();
-
-		
+						
 		Tracer tracer = ThresholdLogTracer.create(ThresholdLogReporter.builder()
 				.kvThreshold(500, TimeUnit.MICROSECONDS)
-				.n1qlThreshold(1, TimeUnit.SECONDS)
+				.n1qlThreshold(10, TimeUnit.MICROSECONDS)
 				.logInterval(1, TimeUnit.SECONDS)   // log every 10 seconds
 				.sampleSize(Integer.MAX_VALUE)
 				.pretty(true)
@@ -66,8 +47,6 @@ public class Database {
 		
 		CouchbaseCluster cluster = CouchbaseCluster.create(env, host);
 		
-		
-		//CouchbaseCluster cluster = CouchbaseCluster.create(host);
 		cluster.authenticate(username, password);
 		return cluster;
 	}
