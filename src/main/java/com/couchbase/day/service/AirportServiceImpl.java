@@ -46,7 +46,8 @@ public class AirportServiceImpl implements AirportService {
 	@SuppressWarnings("rawtypes")
 	public Result findAirportById(String id) {
 		
-		JsonDocument doc = bucket.get("airport_"+ id);
+		//JsonDocument doc = bucket.get("airport_"+ id);
+		JsonDocument doc = bucket.get(id);
 		
         JsonObject responseContent;
 		if(doc == null) {
